@@ -21,6 +21,7 @@
 class I2cMaster {
 public:
     // Constructor of I2cMaster
+	I2cMaster(std::string tag, i2c_port_num_t i2cPort, gpio_num_t sclPin, gpio_num_t sdaPin, uint32_t transQueueDepth);
 	I2cMaster(std::string tag, i2c_port_num_t i2cPort, gpio_num_t sclPin, gpio_num_t sdaPin);
 	I2cMaster(std::string tag, i2c_master_bus_handle_t bus_handle);
 	virtual ~I2cMaster();
@@ -38,6 +39,7 @@ private:
     i2c_port_num_t i2cPort;
     gpio_num_t sclPin;
     gpio_num_t sdaPin;
+    uint32_t transQueueDepth;
 
     i2c_master_bus_config_t busConfig;
     i2c_master_bus_handle_t busHandle;

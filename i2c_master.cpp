@@ -22,6 +22,7 @@ I2cMaster::	I2cMaster(std::string tag,
 	this->i2cPort = i2cPort;
     this->sclPin = sclPin;
     this->sdaPin = sdaPin;
+    this->transQueueDepth = 400;
 
     this->busConfig = {
         (i2c_port_num_t) this->i2cPort,
@@ -30,7 +31,34 @@ I2cMaster::	I2cMaster(std::string tag,
         (i2c_clock_source_t) I2C_CLK_SRC_DEFAULT, // clk_source
         (uint8_t) 7, // glitch_ignore_cnt
         (int) 0, // intr_priority
-        (size_t) 400, // trans_queue_depth
+        (size_t) this->transQueueDepth, // trans_queue_depth
+        { // flags
+            (uint32_t) true, // enable_internal_pullup
+            (uint32_t) false, // allow_pd
+        }
+    };
+    ESP_ERROR_CHECK(i2c_new_master_bus(&(this->busConfig), &(this->busHandle)));
+}
+
+I2cMaster::	I2cMaster(std::string tag,
+           	          i2c_port_num_t i2cPort,
+           	          gpio_num_t sclPin,
+           	          gpio_num_t sdaPin,
+           	          uint32_t transQueueDepth) {
+	this->tag = tag;
+	this->i2cPort = i2cPort;
+    this->sclPin = sclPin;
+    this->sdaPin = sdaPin;
+    this->transQueueDepth = transQueueDepth;
+
+    this->busConfig = {
+        (i2c_port_num_t) this->i2cPort,
+        (gpio_num_t) this->sdaPin,
+        (gpio_num_t) this->sclPin,
+        (i2c_clock_source_t) I2C_CLK_SRC_DEFAULT, // clk_source
+        (uint8_t) 7, // glitch_ignore_cnt
+        (int) 0, // intr_priority
+        (size_t) this->transQueueDepth, // trans_queue_depth
         { // flags
             (uint32_t) true, // enable_internal_pullup
             (uint32_t) false, // allow_pd

@@ -24,11 +24,12 @@ extern "C" void app_main(void)
 		(i2c_port_num_t) 0, // I2C_MASTER_NUM, // i2cPort
 		#ifdef CONFIG_IDF_TARGET_ESP32C3
 		(gpio_num_t) 6, // sclPin
-		(gpio_num_t) 5 // sdaPin
+		(gpio_num_t) 5, // sdaPin
 		#elif CONFIG_IDF_TARGET_ESP32
 		(gpio_num_t) 32, // sclPin
-		(gpio_num_t) 26 // sdaPin
+		(gpio_num_t) 26, // sdaPin
 		#endif
+		(uint32_t) 0 // transQueueDepth: 0=synchronous
     );
 
     // Add the MCP9808 device
@@ -43,16 +44,16 @@ extern "C" void app_main(void)
         )
     );
 
-    // Add the LCD device
-    //i2c_master_dev_handle_t lcdHandle =
-    i2c.AddDevice(new I2cDevice(
-        std::string("lcdDevice"), // tag
-        std::string("LCD"), // deviceName
-        (i2c_addr_bit_len_t) I2C_ADDR_BIT_LEN_7, // devAddrLength
-        (uint16_t) 0x3c, // deviceAddress
-        (uint32_t) 50000 // sclSpeedHz
-        )
-    );
+//    // Add the LCD device
+//    //i2c_master_dev_handle_t lcdHandle =
+//    i2c.AddDevice(new I2cDevice(
+//        std::string("lcdDevice"), // tag
+//        std::string("LCD"), // deviceName
+//        (i2c_addr_bit_len_t) I2C_ADDR_BIT_LEN_7, // devAddrLength
+//        (uint16_t) 0x3c, // deviceAddress
+//        (uint32_t) 50000 // sclSpeedHz
+//        )
+//    );
 
 //    int i = 0;
 
